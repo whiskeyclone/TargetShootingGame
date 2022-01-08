@@ -2,22 +2,29 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    Rigidbody2D rb;
+    Physics physics;
+    Vector2 direction = Vector2.zero;
+    float speed = 10f;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
+        physics = GetComponent<Physics>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetDirection(Vector2 dir)
     {
-        
+        direction = dir;
     }
 
-    public void SetVelocity(Vector2 vel)
+    private void Update()
     {
-        rb.velocity = vel;
+        // Move
+        physics.Move(direction * speed * Time.deltaTime);
+
+        // Reverse direction on horizontal collision
+        if (physics.collisionInfo.left || physics.collisionInfo.right)
+        {
+            direction = new Vector2(direction.x * -1, direction.y);
+        }
     }
 }

@@ -23,6 +23,12 @@ public class Physics : MonoBehaviour
     {
         UpdateRaycastOrigins();
 
+        if (velocity != Vector2.zero)
+        {
+            collisionInfo.colliding = false;
+            collisionInfo.collider = null;
+        }
+        
         if (velocity.x != 0)
         {
             collisionInfo.ResetHorizontal();
@@ -73,6 +79,9 @@ public class Physics : MonoBehaviour
                 {
                     collisionInfo.right = true;
                 }
+
+                collisionInfo.colliding = true;
+                collisionInfo.collider = hit.collider;
             }
         }
     }
@@ -112,6 +121,9 @@ public class Physics : MonoBehaviour
                 {
                     collisionInfo.above = true;
                 }
+
+                collisionInfo.colliding = true;
+                collisionInfo.collider = hit.collider;
             }
         }
     }
@@ -147,6 +159,8 @@ public class Physics : MonoBehaviour
     public struct CollisionInfo
     {
         public bool above, below, left, right;
+        public bool colliding;
+        public Collider2D collider;
 
         public void ResetHorizontal()
         {

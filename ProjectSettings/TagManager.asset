@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Slope
+  - Wall
   layers:
   - Default
   - TransparentFX

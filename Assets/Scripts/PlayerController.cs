@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] GameObject bullet;
+    float bulletSpeed = 10f;
 
     void FireBullet()
     {
@@ -11,7 +12,7 @@ public class PlayerController : MonoBehaviour
 
         // Instantiate bullet
         GameObject bulletInst = Instantiate(bullet, transform.position, transform.rotation);
-        bulletInst.GetComponent<Bullet>().SetDirection(fireDir);
+        bulletInst.GetComponent<Rigidbody2D>().velocity = fireDir * bulletSpeed;
     }
 
     // Update is called once per frame

@@ -3,11 +3,12 @@ using UnityEngine.SceneManagement;
 
 public class Bullet : MonoBehaviour
 {
-    float xDestroyBound = 30f;
-    float yDestroyBound = 30f;
+    const float xDestroyBound = 30f;
+    const float yDestroyBound = 30f;
     int bounceCount = 0;
+    const int maxBounces = 3;
 
-    void CheckToDestroy()
+    private void Update()
     {
         // Destroy this object if it goes beyond xDestroyBound or yDestroyBound
         if ((transform.position.x >= xDestroyBound) || (transform.position.x <= -xDestroyBound) || (transform.position.y >= yDestroyBound) || (transform.position.y <= -yDestroyBound))
@@ -15,15 +16,11 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (bounceCount >= 4)
+        if (bounceCount > maxBounces)
         {
-            Destroy(gameObject);
+            // Restart scene
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
-    }
-
-    private void Update()
-    {
-        CheckToDestroy();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -38,9 +35,10 @@ public class Bullet : MonoBehaviour
     {
         if (collision.tag == "Target")
         {
-            // Destroy target and bullet
+            // Destroy target and bullet, decrement targetsLeft
             Destroy(collision.gameObject);
             Destroy(gameObject);
+            Controller.instance.DecrementTargetsLeft();
         }
     }
 }

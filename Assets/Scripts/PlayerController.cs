@@ -3,7 +3,15 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] GameObject bullet;
-    float bulletSpeed = 10f;
+    Physics physics;
+    const float bulletSpeed = 10f;
+    int moveYDirection = 0;
+    const float moveSpeed = 5f;
+
+    private void Start()
+    {
+        physics = GetComponent<Physics>();
+    }
 
     void FireBullet()
     {
@@ -22,5 +30,19 @@ public class PlayerController : MonoBehaviour
         {
             FireBullet();
         }
+
+        moveYDirection = 0;
+
+        if ((Input.GetKey(KeyCode.W)) && (physics.collisionInfo.above == false))
+        {
+            moveYDirection++;
+        }
+
+        if ((Input.GetKey(KeyCode.S)) && (physics.collisionInfo.below == false))
+        {
+            moveYDirection--;
+        }
+
+        physics.Move(new Vector2(0, moveYDirection * moveSpeed * Time.deltaTime));
     }
 }

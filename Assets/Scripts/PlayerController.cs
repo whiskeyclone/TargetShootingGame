@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
             FireBullet();
         }
 
+        // Get y direction for movement
         moveYDirection = 0;
 
         if ((Input.GetKey(KeyCode.W)) && (physics.collisionInfo.above == false))
@@ -43,6 +44,7 @@ public class PlayerController : MonoBehaviour
             moveYDirection--;
         }
 
+        // Move
         physics.Move(new Vector2(0, moveYDirection * moveSpeed * Time.deltaTime));
     }
 }

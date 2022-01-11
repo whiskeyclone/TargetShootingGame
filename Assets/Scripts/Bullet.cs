@@ -38,7 +38,9 @@ public class Bullet : MonoBehaviour
     {
         if (collision.tag == "Target")
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            // Destroy target and bullet
+            Destroy(collision.gameObject);
+            Destroy(gameObject);
         }
     }
 }

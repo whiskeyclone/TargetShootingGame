@@ -3,8 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class Bullet : MonoBehaviour
 {
-    float xDestroyBound = 10f;
-    float yDestroyBound = 6f;
+    float xDestroyBound = 30f;
+    float yDestroyBound = 30f;
     int bounceCount = 0;
 
     void CheckToDestroy()

@@ -28,7 +28,6 @@ public class Controller : MonoBehaviour
         // Get number of targets in scene
         GameObject[] targets = GameObject.FindGameObjectsWithTag("Target");
         targetsLeft = targets.Length;
-        Debug.Log(targetsLeft);
     }
 
     public void DecrementTargetsLeft()
@@ -48,7 +47,14 @@ public class Controller : MonoBehaviour
         // Advance to next scene when no targets are left
         if (targetsLeft == 0)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            // Get next scene
+            int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+
+            if (nextSceneIndex < SceneManager.sceneCountInBuildSettings) // Check if there is a next scene
+            {
+                // Go to next scene
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            }
         }
     }
 }

@@ -18,8 +18,19 @@ public class Bullet : MonoBehaviour
 
         if (bounceCount > maxBounces)
         {
-            // Restart scene
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            if (PlayerController.instance.GetAmmo() == 0)
+            {
+                // Get num of bullets in scene
+                int bulletCount = GameObject.FindGameObjectsWithTag("Bullet").Length;
+
+                if (bulletCount == 1)
+                {
+                    // Restart scene
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                }
+            }
+
+            Destroy(gameObject);
         }
     }
 

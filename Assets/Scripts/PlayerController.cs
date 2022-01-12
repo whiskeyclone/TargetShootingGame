@@ -2,14 +2,28 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController instance;
+
     [SerializeField] GameObject bullet;
     Physics physics;
     const float bulletSpeed = 10f;
     int moveYDirection = 0;
     const float moveSpeed = 5f;
+    int ammo = 4;
 
     private void Start()
     {
+        // Set instance
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this); // Destroy instance if another instance exists
+            return;
+        }
+
         physics = GetComponent<Physics>();
     }
 
@@ -21,12 +35,20 @@ public class PlayerController : MonoBehaviour
         // Instantiate bullet
         GameObject bulletInst = Instantiate(bullet, transform.position, transform.rotation);
         bulletInst.GetComponent<Rigidbody2D>().velocity = fireDir * bulletSpeed;
+
+        // Decrease ammo
+        ammo--;
+    }
+
+    public int GetAmmo()
+    {
+        return (ammo);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0) && (ammo > 0))
         {
             FireBullet();
         }

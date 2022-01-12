@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     const float moveSpeed = 5f;
     int ammo = 4;
 
-    private void Start()
+    private void Awake()
     {
         // Set instance
         if (instance == null)
@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
 
         // Decrease ammo
         ammo--;
+        AmmoUI.instance.DecreaseAmmoUI();
     }
 
     public int GetAmmo()

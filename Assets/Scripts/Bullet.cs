@@ -3,21 +3,25 @@ using UnityEngine.SceneManagement;
 
 public class Bullet : MonoBehaviour
 {
-    const float xDestroyBound = 30f;
-    const float yDestroyBound = 30f;
+    Bounds cameraBounds;
+    float cameraBoundsDestroyOffset = 2f; // How far off the bounds of the camera the bullet has to go to be destroyed
     int bounceCount = 0;
     const int maxBounces = 3;
 
+    private void Start()
+    {
+        // Get camera bounds
+        float screenAspect = (float)Screen.width / (float)Screen.height;
+        float cameraHeight = Camera.main.orthographicSize * 2;
+        cameraBounds = new Bounds(Camera.main.transform.position, new Vector3(cameraHeight * screenAspect, cameraHeight, 0));
+    }
+
     private void Update()
     {
-        // Destroy this object if it goes beyond xDestroyBound or yDestroyBound
-        if ((transform.position.x >= xDestroyBound) || (transform.position.x <= -xDestroyBound) || (transform.position.y >= yDestroyBound) || (transform.position.y <= -yDestroyBound))
+        // Check to destroy bullet
+        if ((bounceCount > maxBounces) || (transform.position.x >= cameraBounds.max.x + cameraBoundsDestroyOffset) || (transform.position.x <= cameraBounds.min.x - cameraBoundsDestroyOffset) || (transform.position.y >= cameraBounds.max.y + cameraBoundsDestroyOffset) || (transform.position.y <= cameraBounds.min.y - cameraBoundsDestroyOffset))
         {
-            Destroy(gameObject);
-        }
-
-        if (bounceCount > maxBounces)
-        {
+            // Restart scene if the player has no ammo and this is the only bullet on screen
             if (PlayerController.instance.GetAmmo() == 0)
             {
                 // Get num of bullets in scene

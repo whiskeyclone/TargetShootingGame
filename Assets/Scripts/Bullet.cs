@@ -21,17 +21,13 @@ public class Bullet : MonoBehaviour
         // Check to destroy bullet
         if ((bounceCount > maxBounces) || (transform.position.x >= cameraBounds.max.x + cameraBoundsDestroyOffset) || (transform.position.x <= cameraBounds.min.x - cameraBoundsDestroyOffset) || (transform.position.y >= cameraBounds.max.y + cameraBoundsDestroyOffset) || (transform.position.y <= cameraBounds.min.y - cameraBoundsDestroyOffset))
         {
-            // Restart scene if the player has no ammo and this is the only bullet on screen
-            if (PlayerController.instance.GetAmmo() == 0)
-            {
-                // Get num of bullets in scene
-                int bulletCount = GameObject.FindGameObjectsWithTag("Bullet").Length;
+            // Get num of bullets in scene
+            int bulletCount = GameObject.FindGameObjectsWithTag("Bullet").Length;
 
-                if (bulletCount == 1)
-                {
-                    // Restart scene
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-                }
+            // Restart scene if the player has no ammo and this is the only bullet on screen
+            if ((PlayerController.instance.GetAmmo() == 0) && (bulletCount == 1))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
 
             Destroy(gameObject);
@@ -50,10 +46,21 @@ public class Bullet : MonoBehaviour
     {
         if (collision.tag == "Target")
         {
-            // Destroy target and bullet, decrement targetsLeft
-            Destroy(collision.gameObject);
-            Destroy(gameObject);
-            Controller.instance.DecrementTargetsLeft();
+            // Get num of bullets in scene
+            int bulletCount = GameObject.FindGameObjectsWithTag("Bullet").Length;
+            int targetsLeft = GameObject.FindGameObjectsWithTag("Target").Length;
+
+            // Restart scene if the player has no ammo, this is the only bullet on screen, and this is not the last target
+            if ((PlayerController.instance.GetAmmo() == 0) && (bulletCount == 1) && (targetsLeft > 1))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+            else
+            {
+                // Destroy target and bullet, decrement targetsLeft
+                Destroy(collision.gameObject);
+                Destroy(gameObject);
+            }
         }
     }
 }

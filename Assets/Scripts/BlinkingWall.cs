@@ -22,12 +22,10 @@ public class BlinkingWall : MonoBehaviour
         if (BlinkTimer.instance.GetState() == onState)
         {
             transform.localScale = scale;
-            GetComponent<BoxCollider2D>().enabled = true;
         }
         else
         {
             transform.localScale = new Vector3(0, 0, 0);
-            GetComponent<BoxCollider2D>().enabled = false;
         }
     }
 }

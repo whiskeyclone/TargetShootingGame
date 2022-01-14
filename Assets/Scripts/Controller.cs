@@ -25,7 +25,7 @@ public class Controller : MonoBehaviour
         Physics2D.IgnoreLayerCollision(ignoreCollisionLayer, ignoreCollisionLayer);
     }
 
-    private void Update()
+    void CheckTargetsLeft()
     {
         int targetsLeft = GameObject.FindGameObjectsWithTag("Target").Length;
 
@@ -40,6 +40,16 @@ public class Controller : MonoBehaviour
                 // Go to next scene
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             }
+        }
+    }
+
+    private void Update()
+    {
+        CheckTargetsLeft();
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }

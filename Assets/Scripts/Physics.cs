@@ -8,14 +8,14 @@ public class Physics : MonoBehaviour
     float horizontalRaySpacing;
     float verticalRaySpacing;
 
-    BoxCollider2D boxCollider;
+    Collider2D col;
     RaycastOrigins raycastOrigins;
     public CollisionInfo collisionInfo;
     [SerializeField] LayerMask collisionMask;
 
     private void Start()
     {
-        boxCollider = GetComponent<BoxCollider2D>();
+        col = GetComponent<Collider2D>();
         CalculateRaySpacing();
     }
 
@@ -130,7 +130,7 @@ public class Physics : MonoBehaviour
 
     void UpdateRaycastOrigins()
     {
-        Bounds bounds = boxCollider.bounds; // Get bounds
+        Bounds bounds = col.bounds; // Get bounds
         bounds.Expand(skinWidth * -2); // Shrink bounds
 
         raycastOrigins.bottomLeft = new Vector2(bounds.min.x, bounds.min.y); // Set raycast origins
@@ -141,7 +141,7 @@ public class Physics : MonoBehaviour
 
     void CalculateRaySpacing()
     {
-        Bounds bounds = boxCollider.bounds; // Get bounds
+        Bounds bounds = col.bounds; // Get bounds
         bounds.Expand(skinWidth * -2); // Shrink bounds
 
         horizontalRayCount = Mathf.Clamp(horizontalRayCount, 2, int.MaxValue); // Make sure ray counts are 2 or greater each

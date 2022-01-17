@@ -3,13 +3,18 @@ using UnityEngine.SceneManagement;
 
 public class Bullet : MonoBehaviour
 {
+    SpriteRenderer spriteRend;
     Bounds cameraBounds;
     float cameraBoundsDestroyOffset = 2f; // How far off the bounds of the camera the bullet has to go to be destroyed
     int bounceCount = 0;
     const int maxBounces = 3;
+    const float reddenAmount = 0.2f; // How much to redden the bullet sprite when bouncing
 
     private void Start()
     {
+        // Get components
+        spriteRend = GetComponent<SpriteRenderer>();
+
         // Get camera bounds
         float screenAspect = (float)Screen.width / (float)Screen.height;
         float cameraHeight = Camera.main.orthographicSize * 2;
@@ -21,11 +26,8 @@ public class Bullet : MonoBehaviour
         // Check to destroy bullet
         if ((bounceCount > maxBounces) || (transform.position.x >= cameraBounds.max.x + cameraBoundsDestroyOffset) || (transform.position.x <= cameraBounds.min.x - cameraBoundsDestroyOffset) || (transform.position.y >= cameraBounds.max.y + cameraBoundsDestroyOffset) || (transform.position.y <= cameraBounds.min.y - cameraBoundsDestroyOffset))
         {
-            // Get num of bullets in scene
-            int bulletCount = GameObject.FindGameObjectsWithTag("Bullet").Length;
-
             // Restart scene if the player has no ammo and this is the only bullet on screen
-            if ((PlayerController.instance.GetAmmo() == 0) && (bulletCount == 1))
+            if (IsLastBullet() == true)
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
@@ -34,11 +36,31 @@ public class Bullet : MonoBehaviour
         }
     }
 
+    // Returns true if this bullet is the only one in the scene and the player has no ammo
+    bool IsLastBullet()
+    {
+        int bulletCount = GameObject.FindGameObjectsWithTag("Bullet").Length;
+
+        if ((PlayerController.instance.GetAmmo() == 0) && (bulletCount == 1))
+        {
+            return (true);
+        }
+        else
+        {
+            return (false);
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if ((collision.transform.tag == "Wall") || (collision.transform.tag == "Slope"))
         {
             bounceCount++;
+
+            // Redden color
+            Color currentColor = spriteRend.color;
+            Color newColor = new Color(currentColor.r, Mathf.Clamp(currentColor.g - reddenAmount, 0, 1), currentColor.b);
+            spriteRend.color = newColor;
         }
     }
 
@@ -46,12 +68,10 @@ public class Bullet : MonoBehaviour
     {
         if (collision.tag == "Target")
         {
-            // Get num of bullets in scene
-            int bulletCount = GameObject.FindGameObjectsWithTag("Bullet").Length;
             int targetsLeft = GameObject.FindGameObjectsWithTag("Target").Length;
 
             // Restart scene if the player has no ammo, this is the only bullet on screen, and this is not the last target
-            if ((PlayerController.instance.GetAmmo() == 0) && (bulletCount == 1) && (targetsLeft > 1))
+            if ((IsLastBullet() == true) && (targetsLeft > 1))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }

@@ -9,6 +9,7 @@ public class Bullet : MonoBehaviour
     int bounceCount = 0;
     const int maxBounces = 3;
     const float reddenAmount = 0.2f; // How much to redden the bullet sprite when bouncing
+    int portalsTouchedWhileTeleporting = 0;
 
     private void Start()
     {
@@ -33,6 +34,23 @@ public class Bullet : MonoBehaviour
             }
 
             Destroy(gameObject);
+        }
+    }
+
+    public int GetPortalsTouchedWhileTeleporting()
+    {
+        return (portalsTouchedWhileTeleporting);
+    }
+
+    public void SetPortalsTouchedWhileTeleporting(int x)
+    {
+        if (x <= 2)
+        {
+            portalsTouchedWhileTeleporting = x;
+        }
+        else
+        {
+            Debug.LogError("Bullet cannot touch more than 2 portals!");
         }
     }
 

@@ -25,31 +25,20 @@ public class Controller : MonoBehaviour
         Physics2D.IgnoreLayerCollision(ignoreCollisionLayer, ignoreCollisionLayer);
     }
 
-    void CheckTargetsLeft()
+    public void GoToNextScene()
     {
-        int targetsLeft = GameObject.FindGameObjectsWithTag("Target").Length;
+        // Get next scene
+        int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
 
-        // Advance to next scene when no targets are left
-        if (targetsLeft == 0)
+        if (nextSceneIndex < SceneManager.sceneCountInBuildSettings) // Check if next scene is valid
         {
-            // Get next scene
-            int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-
-            if (nextSceneIndex < SceneManager.sceneCountInBuildSettings) // Check if next scene is valid
-            {
-                // Go to next scene
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-            }
+            // Go to next scene
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 
-    private void Update()
+    public void RestartScene()
     {
-        CheckTargetsLeft();
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

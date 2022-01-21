@@ -54,6 +54,11 @@ public class PlayerController : MonoBehaviour
             FireBullet();
         }
 
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Controller.instance.RestartScene();
+        }
+
         // Get y direction for movement
         moveYDirection = 0;
 

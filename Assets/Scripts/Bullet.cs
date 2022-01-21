@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Bullet : MonoBehaviour
 {
@@ -24,8 +23,8 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
-        // Check to destroy bullet
-        if ((bounceCount > maxBounces) || (transform.position.x >= cameraBounds.max.x + cameraBoundsDestroyOffset) || (transform.position.x <= cameraBounds.min.x - cameraBoundsDestroyOffset) || (transform.position.y >= cameraBounds.max.y + cameraBoundsDestroyOffset) || (transform.position.y <= cameraBounds.min.y - cameraBoundsDestroyOffset))
+        // Destroy bullet when it goes off camera
+        if ((transform.position.x >= cameraBounds.max.x + cameraBoundsDestroyOffset) || (transform.position.x <= cameraBounds.min.x - cameraBoundsDestroyOffset) || (transform.position.y >= cameraBounds.max.y + cameraBoundsDestroyOffset) || (transform.position.y <= cameraBounds.min.y - cameraBoundsDestroyOffset))
         {
             DestroySelf();
         }
@@ -40,10 +39,12 @@ public class Bullet : MonoBehaviour
         // If the player has no ammo, this is the last bullet in the scene, and there are still targets in the scene, restart scene
         if ((PlayerController.instance.GetAmmo() == 0) && (bulletCount == 1) && (targetCount > 0))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            Controller.instance.RestartScene();
         }
-
-        Destroy(gameObject);
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     public int GetPortalsTouchedWhileTeleporting()
@@ -69,10 +70,17 @@ public class Bullet : MonoBehaviour
         {
             bounceCount++;
 
-            // Redden color
-            Color currentColor = spriteRend.color;
-            Color newColor = new Color(currentColor.r, Mathf.Clamp(currentColor.g - reddenAmount, 0, 1), currentColor.b);
-            spriteRend.color = newColor;
+            if (bounceCount > maxBounces)
+            {
+                DestroySelf();
+            }
+            else
+            {
+                // Redden bullet color
+                Color currentColor = spriteRend.color;
+                Color newColor = new Color(currentColor.r, Mathf.Clamp(currentColor.g - reddenAmount, 0, 1), currentColor.b);
+                spriteRend.color = newColor;
+            }
         }
     }
 
@@ -80,8 +88,19 @@ public class Bullet : MonoBehaviour
     {
         if (collision.tag == "Target")
         {
-            Destroy(collision.gameObject);
-            DestroySelf();
+            int targetCount = GameObject.FindGameObjectsWithTag("Target").Length;
+
+            // Move to next level if level is complete
+            if (targetCount == 1)
+            {
+                Controller.instance.GoToNextScene();
+            }
+            else
+            {
+                // Destroy target and bullet
+                Destroy(collision.gameObject);
+                DestroySelf();
+            }
         }
     }
 }

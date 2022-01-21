@@ -27,14 +27,23 @@ public class Bullet : MonoBehaviour
         // Check to destroy bullet
         if ((bounceCount > maxBounces) || (transform.position.x >= cameraBounds.max.x + cameraBoundsDestroyOffset) || (transform.position.x <= cameraBounds.min.x - cameraBoundsDestroyOffset) || (transform.position.y >= cameraBounds.max.y + cameraBoundsDestroyOffset) || (transform.position.y <= cameraBounds.min.y - cameraBoundsDestroyOffset))
         {
-            // Restart scene if the player has no ammo and this is the only bullet on screen
-            if (IsLastBullet() == true)
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            }
-
-            Destroy(gameObject);
+            DestroySelf();
         }
+    }
+
+    // Destroy bullet and check to see if scene should be restarted
+    public void DestroySelf()
+    {
+        int bulletCount = GameObject.FindGameObjectsWithTag("Bullet").Length;
+        int targetCount = GameObject.FindGameObjectsWithTag("Target").Length;
+
+        // If the player has no ammo, this is the last bullet in the scene, and there are still targets in the scene, restart scene
+        if ((PlayerController.instance.GetAmmo() == 0) && (bulletCount == 1) && (targetCount > 0))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        Destroy(gameObject);
     }
 
     public int GetPortalsTouchedWhileTeleporting()
@@ -51,21 +60,6 @@ public class Bullet : MonoBehaviour
         else
         {
             Debug.LogError("Bullet cannot touch more than 2 portals!");
-        }
-    }
-
-    // Returns true if this bullet is the only one in the scene and the player has no ammo
-    bool IsLastBullet()
-    {
-        int bulletCount = GameObject.FindGameObjectsWithTag("Bullet").Length;
-
-        if ((PlayerController.instance.GetAmmo() == 0) && (bulletCount == 1))
-        {
-            return (true);
-        }
-        else
-        {
-            return (false);
         }
     }
 
@@ -86,19 +80,8 @@ public class Bullet : MonoBehaviour
     {
         if (collision.tag == "Target")
         {
-            int targetsLeft = GameObject.FindGameObjectsWithTag("Target").Length;
-
-            // Restart scene if the player has no ammo, this is the only bullet on screen, and this is not the last target
-            if ((IsLastBullet() == true) && (targetsLeft > 1))
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            }
-            else
-            {
-                // Destroy target and bullet, decrement targetsLeft
-                Destroy(collision.gameObject);
-                Destroy(gameObject);
-            }
+            Destroy(collision.gameObject);
+            DestroySelf();
         }
     }
 }

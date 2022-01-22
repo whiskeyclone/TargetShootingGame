@@ -70,6 +70,7 @@ public class Bullet : MonoBehaviour
         {
             bounceCount++;
 
+            // Destroy bullet if max bounces has been acceded 
             if (bounceCount > maxBounces)
             {
                 DestroySelf();
@@ -95,12 +96,10 @@ public class Bullet : MonoBehaviour
             {
                 Controller.instance.GoToNextScene();
             }
-            else
-            {
-                // Destroy target and bullet
-                Destroy(collision.gameObject);
-                DestroySelf();
-            }
+
+            // Destroy target and bullet
+            Destroy(collision.gameObject);
+            DestroySelf();
         }
     }
 }

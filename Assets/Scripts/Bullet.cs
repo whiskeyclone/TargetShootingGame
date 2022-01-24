@@ -96,10 +96,11 @@ public class Bullet : MonoBehaviour
             {
                 Controller.instance.GoToNextScene();
             }
-
-            // Destroy target and bullet
-            Destroy(collision.gameObject);
-            DestroySelf();
+            else
+            {
+                Destroy(collision.gameObject);
+                DestroySelf();
+            }
         }
     }
 }

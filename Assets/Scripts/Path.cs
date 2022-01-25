@@ -15,12 +15,6 @@ public class Path : MonoBehaviour
     {
         // Get node positions
         PathNode[] nodes = transform.GetChild(0).GetComponentsInChildren<PathNode>();
-
-        if (nodes.Length < 2)
-        {
-            Debug.LogError("Path has less than 2 nodes!");
-        }
-
         nodePositions = new Vector3[nodes.Length];
 
         for (int i = 0; i < nodes.Length; i++)
@@ -28,13 +22,14 @@ public class Path : MonoBehaviour
             nodePositions[i] = nodes[i].transform.position;
         }
 
+        // Get object to be moved
         moveObject = transform.GetChild(1);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if ((nodePositions.Length > 1) && (moveObject != null))
+        if (moveSpeed > 0)
         {
             // Move parent
             moveObject.position = Vector3.MoveTowards(moveObject.position, nodePositions[targetPositionIndex], moveSpeed * Time.deltaTime);

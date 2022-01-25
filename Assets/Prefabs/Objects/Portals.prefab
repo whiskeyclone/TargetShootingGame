@@ -370,3 +370,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed44601c4e23c3c42adfc1d6867d1032, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  portal1Trans: {fileID: 3999239359602259614}
+  portal2Trans: {fileID: 3999239359521375757}

@@ -29,7 +29,7 @@ public class Path : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (moveSpeed > 0)
+        if ((moveSpeed > 0) && (moveObject != null))
         {
             // Move parent
             moveObject.position = Vector3.MoveTowards(moveObject.position, nodePositions[targetPositionIndex], moveSpeed * Time.deltaTime);

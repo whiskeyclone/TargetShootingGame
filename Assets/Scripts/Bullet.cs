@@ -3,6 +3,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     SpriteRenderer spriteRend;
+    ParticleSystem particleSys;
     Bounds cameraBounds;
     float cameraBoundsDestroyOffset = 2f; // How far off the bounds of the camera the bullet has to go to be destroyed
     int bounceCount = 0;
@@ -14,6 +15,7 @@ public class Bullet : MonoBehaviour
     {
         // Get components
         spriteRend = GetComponent<SpriteRenderer>();
+        particleSys = GetComponent<ParticleSystem>();
 
         // Get camera bounds
         float screenAspect = (float)Screen.width / (float)Screen.height;
@@ -64,23 +66,34 @@ public class Bullet : MonoBehaviour
         }
     }
 
+    // Redden bullet and trail color
+    void ChangeColor()
+    {
+        // Get reddened color
+        Color currentColor = spriteRend.color;
+        Color newColor = new Color(currentColor.r, Mathf.Clamp(currentColor.g - reddenAmount, 0, 1), currentColor.b);
+
+        // Apply color to bullet
+        spriteRend.color = newColor;
+
+        // Apply color to trail
+        var main = particleSys.main;
+        main.startColor = newColor;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if ((collision.transform.tag == "Wall") || (collision.transform.tag == "Slope"))
         {
             bounceCount++;
 
-            // Destroy bullet if max bounces has been acceded 
             if (bounceCount > maxBounces)
             {
                 DestroySelf();
             }
             else
             {
-                // Redden bullet color
-                Color currentColor = spriteRend.color;
-                Color newColor = new Color(currentColor.r, Mathf.Clamp(currentColor.g - reddenAmount, 0, 1), currentColor.b);
-                spriteRend.color = newColor;
+                ChangeColor();
             }
         }
     }

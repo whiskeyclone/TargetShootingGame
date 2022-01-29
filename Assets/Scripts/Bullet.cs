@@ -4,6 +4,7 @@ public class Bullet : MonoBehaviour
 {
     SpriteRenderer spriteRend;
     ParticleSystem particleSys;
+    [SerializeField] GameObject explosion;
     Bounds cameraBounds;
     float cameraBoundsDestroyOffset = 2f; // How far off the bounds of the camera the bullet has to go to be destroyed
     int bounceCount = 0;
@@ -32,7 +33,7 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    // Destroy bullet and check to see if scene should be restarted
+    // Check to see if scene should be restarted. If not, destroy bullet
     public void DestroySelf()
     {
         int bulletCount = GameObject.FindGameObjectsWithTag("Bullet").Length;
@@ -45,6 +46,7 @@ public class Bullet : MonoBehaviour
         }
         else
         {
+            CreateExplosion();
             Destroy(gameObject);
         }
     }
@@ -79,6 +81,20 @@ public class Bullet : MonoBehaviour
         // Apply color to trail
         var main = particleSys.main;
         main.startColor = newColor;
+    }
+
+    // Spawn explosion object at this bullet's location and color it the current color of the bullet
+    void CreateExplosion()
+    {
+        // Get color of bullet
+        Color bulletColor = spriteRend.color;
+
+        // Spawn explosion
+        GameObject explosionInst = Instantiate(explosion, transform.position, transform.rotation);
+
+        // Change explosion color
+        var main = explosionInst.GetComponent<ParticleSystem>().main;
+        main.startColor = bulletColor;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

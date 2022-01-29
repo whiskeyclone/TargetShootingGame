@@ -25,7 +25,7 @@ public class Controller : MonoBehaviour
         Physics2D.IgnoreLayerCollision(ignoreCollisionLayer, ignoreCollisionLayer);
     }
 
-    public void GoToNextScene()
+    private void GoToNextScene()
     {
         // Get next scene
         int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
@@ -40,5 +40,16 @@ public class Controller : MonoBehaviour
     public void RestartScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    // If there are no targets left, proceed to next scene.
+    public void CheckWin()
+    {
+        int targetCount = GameObject.FindGameObjectsWithTag("Target").Length;
+
+        if (targetCount == 0)
+        {
+            GoToNextScene();
+        }
     }
 }

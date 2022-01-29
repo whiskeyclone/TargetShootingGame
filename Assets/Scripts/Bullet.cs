@@ -6,11 +6,11 @@ public class Bullet : MonoBehaviour
     ParticleSystem particleSys;
     [SerializeField] GameObject explosion;
     Bounds cameraBounds;
-    float cameraBoundsDestroyOffset = 2f; // How far off the bounds of the camera the bullet has to go to be destroyed
     int bounceCount = 0;
     const int maxBounces = 3;
     const float reddenAmount = 0.2f; // How much to redden the bullet sprite when bouncing
     int portalsTouchedWhileTeleporting = 0;
+    bool targetHit = false;
 
     private void Start()
     {
@@ -27,28 +27,16 @@ public class Bullet : MonoBehaviour
     private void Update()
     {
         // Destroy bullet when it goes off camera
-        if ((transform.position.x >= cameraBounds.max.x + cameraBoundsDestroyOffset) || (transform.position.x <= cameraBounds.min.x - cameraBoundsDestroyOffset) || (transform.position.y >= cameraBounds.max.y + cameraBoundsDestroyOffset) || (transform.position.y <= cameraBounds.min.y - cameraBoundsDestroyOffset))
+        if ((transform.position.x >= cameraBounds.max.x) || (transform.position.x <= cameraBounds.min.x) || (transform.position.y >= cameraBounds.max.y) || (transform.position.y <= cameraBounds.min.y))
         {
             DestroySelf();
         }
     }
 
-    // Check to see if scene should be restarted. If not, destroy bullet
     public void DestroySelf()
     {
-        int bulletCount = GameObject.FindGameObjectsWithTag("Bullet").Length;
-        int targetCount = GameObject.FindGameObjectsWithTag("Target").Length;
-
-        // If the player has no ammo, this is the last bullet in the scene, and there are still targets in the scene, restart scene
-        if ((PlayerController.instance.GetAmmo() == 0) && (bulletCount == 1) && (targetCount > 0))
-        {
-            Controller.instance.RestartScene();
-        }
-        else
-        {
-            CreateExplosion();
-            Destroy(gameObject);
-        }
+        CreateExplosion();
+        Destroy(gameObject);
     }
 
     public int GetPortalsTouchedWhileTeleporting()
@@ -95,6 +83,9 @@ public class Bullet : MonoBehaviour
         // Change explosion color
         var main = explosionInst.GetComponent<ParticleSystem>().main;
         main.startColor = bulletColor;
+
+        // Set targetHit for explosion
+        explosionInst.GetComponent<Explosion>().SetTargetHit(targetHit);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -118,18 +109,9 @@ public class Bullet : MonoBehaviour
     {
         if (collision.tag == "Target")
         {
-            int targetCount = GameObject.FindGameObjectsWithTag("Target").Length;
-
-            // Move to next level if level is complete
-            if (targetCount == 1)
-            {
-                Controller.instance.GoToNextScene();
-            }
-            else
-            {
-                Destroy(collision.gameObject);
-                DestroySelf();
-            }
+            targetHit = true;
+            Destroy(collision.gameObject);
+            DestroySelf();
         }
     }
 }

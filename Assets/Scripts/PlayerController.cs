@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     const float bulletSpeed = 10f;
     int moveYDirection = 0;
     const float moveSpeed = 5f;
-    int ammo = 4;
+    int ammo = 3;
 
     private void Awake()
     {
@@ -52,11 +52,6 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0) && (ammo > 0))
         {
             FireBullet();
-        }
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Controller.instance.RestartScene();
         }
 
         // Get y direction for movement

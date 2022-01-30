@@ -49,6 +49,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Controller.instance.RestartScene();
+        }
+
         if (Input.GetKeyDown(KeyCode.Mouse0) && (ammo > 0))
         {
             FireBullet();

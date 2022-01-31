@@ -3,17 +3,41 @@ using UnityEngine;
 public class Portal : MonoBehaviour
 {
     [SerializeField] Portal otherPortal;
+    [SerializeField] Transform sprite1Trans;
+    [SerializeField] Transform sprite2Trans;
+    [SerializeField] GameObject explosion;
+
+    float rotateSpeed = 40f;
+
+    private void Update()
+    {
+        // Rotate sprites
+        sprite1Trans.Rotate(0f, 0f, -rotateSpeed * Time.deltaTime);
+        sprite2Trans.Rotate(0f, 0f, rotateSpeed * Time.deltaTime);
+    }
+
+    void CreateExplosion()
+    {
+        Instantiate(explosion, transform.position, transform.rotation);
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Bullet")
-        {
-            // Teleport if bullet has touched no portals
+        {       
             Bullet bullet = collision.GetComponent<Bullet>();
+            var emission = bullet.GetComponent<ParticleSystem>().emission;
 
-            if (bullet.GetPortalsTouchedWhileTeleporting() == 0)
+            if (bullet.GetPortalsTouchedWhileTeleporting() == 0) // Enter first portal
             {
-                collision.transform.position = otherPortal.transform.position;
+                emission.enabled = false; // Disable bullet particles
+                collision.transform.position = otherPortal.transform.position; // Teleport
+                CreateExplosion();
+            }
+            else if (bullet.GetPortalsTouchedWhileTeleporting() == 1) // Enter second portal
+            {
+                emission.enabled = true; // Enable bullet particles
+                CreateExplosion();
             }
 
             bullet.SetPortalsTouchedWhileTeleporting(bullet.GetPortalsTouchedWhileTeleporting() + 1);

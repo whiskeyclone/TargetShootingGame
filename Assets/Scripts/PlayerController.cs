@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     int moveYDirection = 0;
     const float moveSpeed = 5f;
     int ammo = 3;
+    float bulletSpawnOffset = 0.75f; // How far away from player to spawn bullet
 
     private void Awake()
     {
@@ -29,11 +30,11 @@ public class PlayerController : MonoBehaviour
 
     void FireBullet()
     {
-        // Get direction to fire in
-        Vector2 fireDir = (Crosshair.instance.transform.position - transform.position).normalized;
+        Vector2 fireDir = (Crosshair.instance.transform.position - transform.position).normalized; // Get direction to crosshair
+        Vector2 bulletSpawnPos = new Vector2(transform.position.x, transform.position.y) + (fireDir * bulletSpawnOffset);
 
         // Instantiate bullet
-        GameObject bulletInst = Instantiate(bullet, transform.position, transform.rotation);
+        GameObject bulletInst = Instantiate(bullet, bulletSpawnPos, transform.rotation);
         bulletInst.GetComponent<Rigidbody2D>().velocity = fireDir * bulletSpeed;
 
         // Decrease ammo

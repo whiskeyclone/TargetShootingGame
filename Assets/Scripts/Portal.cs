@@ -26,17 +26,20 @@ public class Portal : MonoBehaviour
         if (collision.tag == "Bullet")
         {       
             Bullet bullet = collision.GetComponent<Bullet>();
-            var emission = bullet.GetComponent<ParticleSystem>().emission;
+            ParticleSystem partSys = bullet.GetComponent<ParticleSystem>();
 
             if (bullet.GetPortalsTouchedWhileTeleporting() == 0) // Enter first portal
             {
-                emission.enabled = false; // Disable bullet particles
+                // Stop and clear bullet particles
+                partSys.Stop();
+                partSys.Clear();
+
                 collision.transform.position = otherPortal.transform.position; // Teleport
                 CreateExplosion();
             }
             else if (bullet.GetPortalsTouchedWhileTeleporting() == 1) // Enter second portal
             {
-                emission.enabled = true; // Enable bullet particles
+                partSys.Play(); // Play bullet particles
                 CreateExplosion();
             }
 

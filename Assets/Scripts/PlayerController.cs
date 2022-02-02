@@ -5,6 +5,8 @@ public class PlayerController : MonoBehaviour
     public static PlayerController instance;
 
     [SerializeField] GameObject bullet;
+    [SerializeField] Transform spriteTrans;
+
     Physics physics;
     const float bulletSpeed = 10f;
     int moveYDirection = 0;
@@ -47,14 +49,25 @@ public class PlayerController : MonoBehaviour
         return (ammo);
     }
 
-    // Update is called once per frame
-    void Update()
+    void PointToCursor()
     {
+        // Get direction to crosshair
+        Vector2 aimDir = (Crosshair.instance.transform.position - transform.position).normalized;
+
+        // Rotate to point towards crosshair
+        float angle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg - 90f;
+        spriteTrans.eulerAngles = new Vector3(0, 0, angle);
+    }
+
+    void GetInputs()
+    {
+        // Restart scene
         if (Input.GetKeyDown(KeyCode.R))
         {
             Controller.instance.RestartScene();
         }
 
+        // Fire bullet
         if (Input.GetKeyDown(KeyCode.Mouse0) && (ammo > 0))
         {
             FireBullet();
@@ -63,17 +76,25 @@ public class PlayerController : MonoBehaviour
         // Get y direction for movement
         moveYDirection = 0;
 
+        // Move up
         if ((Input.GetKey(KeyCode.W)) && (physics.collisionInfo.above == false))
         {
             moveYDirection++;
         }
 
+        // Move down
         if ((Input.GetKey(KeyCode.S)) && (physics.collisionInfo.below == false))
         {
             moveYDirection--;
         }
+    }
 
-        // Move
-        physics.Move(new Vector2(0, moveYDirection * moveSpeed * Time.deltaTime));
+    // Update is called once per frame
+    void Update()
+    {
+        PointToCursor();
+        GetInputs();
+        
+        physics.Move(new Vector2(0, moveYDirection * moveSpeed * Time.deltaTime)); // Move
     }
 }

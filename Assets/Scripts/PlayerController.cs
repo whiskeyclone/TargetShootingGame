@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     const float bulletSpeed = 10f;
     int moveYDirection = 0;
     const float moveSpeed = 5f;
-    int ammo = 3;
+    int ammo = 4;
     float bulletSpawnOffset = 0.75f; // How far away from player to spawn bullet
 
     private void Awake()

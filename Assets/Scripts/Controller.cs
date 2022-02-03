@@ -42,14 +42,19 @@ public class Controller : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    // If there are no targets left, proceed to next scene.
+    // If there are no targets left, move to next scene. Otherwise, if it is impossible for the player to win, restart scene
     public void CheckWin()
     {
         int targetCount = GameObject.FindGameObjectsWithTag("Target").Length;
+        int bulletCount = GameObject.FindGameObjectsWithTag("Bullet").Length + PlayerController.instance.GetAmmo();
 
         if (targetCount == 0)
         {
             GoToNextScene();
+        }
+        else if (bulletCount < targetCount)
+        {
+            RestartScene();
         }
     }
 }

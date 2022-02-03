@@ -10,7 +10,6 @@ public class Bullet : MonoBehaviour
     const int maxBounces = 3;
     const float reddenAmount = 0.2f; // How much to redden the bullet sprite when bouncing
     int portalsTouchedWhileTeleporting = 0;
-    bool targetHit = false;
 
     private void Start()
     {
@@ -83,9 +82,6 @@ public class Bullet : MonoBehaviour
         // Change explosion color
         var main = explosionInst.GetComponent<ParticleSystem>().main;
         main.startColor = bulletColor;
-
-        // Set targetHit for explosion
-        explosionInst.GetComponent<Explosion>().SetTargetHit(targetHit);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -109,7 +105,6 @@ public class Bullet : MonoBehaviour
     {
         if (collision.tag == "Target")
         {
-            targetHit = true;
             Destroy(collision.gameObject);
             DestroySelf();
         }

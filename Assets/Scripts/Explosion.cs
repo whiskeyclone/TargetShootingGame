@@ -6,18 +6,6 @@ public class Explosion : MonoBehaviour
 
     private void OnParticleSystemStopped()
     {
-        if (targetHit == true)
-        {
-            Controller.instance.CheckWin();
-        }
-        else
-        {
-            Controller.instance.RestartScene();
-        }
-    }
-
-    public void SetTargetHit(bool x)
-    {
-        targetHit = x;
+        Controller.instance.CheckWin();
     }
 }

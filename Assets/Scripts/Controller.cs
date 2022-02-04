@@ -25,7 +25,7 @@ public class Controller : MonoBehaviour
         Physics2D.IgnoreLayerCollision(ignoreCollisionLayer, ignoreCollisionLayer);
     }
 
-    private void GoToNextScene()
+    public void GoToNextScene()
     {
         // Get next scene
         int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;

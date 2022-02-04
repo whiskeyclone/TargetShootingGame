@@ -6,6 +6,8 @@ public class Controller : MonoBehaviour
     public static Controller instance;
 
     [SerializeField] int ignoreCollisionLayer;
+    [SerializeField] GameObject wipe;
+    bool levelWon = false;
 
     // Start is called before the first frame update
     void Start()
@@ -45,16 +47,25 @@ public class Controller : MonoBehaviour
     // If there are no targets left, move to next scene. Otherwise, if it is impossible for the player to win, restart scene
     public void CheckWin()
     {
-        int targetCount = GameObject.FindGameObjectsWithTag("Target").Length;
-        int bulletCount = GameObject.FindGameObjectsWithTag("Bullet").Length + PlayerController.instance.GetAmmo();
+        if (GameObject.FindGameObjectsWithTag("Wipe").Length == 0) // If there are no wipes
+        {
+            int targetCount = GameObject.FindGameObjectsWithTag("Target").Length;
+            int bulletCount = GameObject.FindGameObjectsWithTag("Bullet").Length + PlayerController.instance.GetAmmo();
 
-        if (targetCount == 0)
-        {
-            GoToNextScene();
+            if (targetCount == 0)
+            {
+                GameObject wipeInst = Instantiate(wipe, transform.position, transform.rotation); // Spawn wipe
+                levelWon = true;
+            }
+            else if (bulletCount < targetCount)
+            {
+                Instantiate(wipe, transform.position, transform.rotation); // Spawn wipe
+            }
         }
-        else if (bulletCount < targetCount)
-        {
-            RestartScene();
-        }
+    }
+
+    public bool GetLevelWon()
+    {
+        return (levelWon);
     }
 }

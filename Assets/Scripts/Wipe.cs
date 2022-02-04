@@ -8,7 +8,6 @@ public class Wipe : MonoBehaviour
     Vector2 endPos;
     Vector2 cameraPos;
     float speed = 30f;
-    int nextSceneIndex;
 
     // Start is called before the first frame update
     void Start()
@@ -19,15 +18,14 @@ public class Wipe : MonoBehaviour
         transform.position = startPos;
         ScaleToScreen();
 
-        nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        SceneManager.sceneLoaded += OnSceneLoaded;
 
-        // Check that nextSceneIndex is valid
-        if (nextSceneIndex >= SceneManager.sceneCountInBuildSettings)
-        {
-            Debug.LogError("There is no next scene!");
-        }
+        StartCoroutine(MoveToCenter());
+    }
 
-        StartCoroutine(Move());
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        StartCoroutine(MoveToEnd());
     }
 
     // Scale object so it covers the entire screen
@@ -53,7 +51,8 @@ public class Wipe : MonoBehaviour
         endPos = cameraPos + new Vector2(-cameraWidth, 0);
     }
 
-    IEnumerator Move()
+    // Move to center of screen then change/restart scene
+    IEnumerator MoveToCenter()
     {
         // Move to center of screen
         while (transform.position.x > cameraPos.x)
@@ -62,17 +61,23 @@ public class Wipe : MonoBehaviour
             yield return null;
         }
 
-        SceneManager.LoadScene(nextSceneIndex); // Move to next scene
-
-        // Wait for scene to load
-        while (SceneManager.GetActiveScene().buildIndex != nextSceneIndex)
+        // Change or restart scene
+        if (Controller.instance.GetLevelWon() == true)
         {
-            yield return null;
+            Controller.instance.GoToNextScene();
         }
+        else
+        {
+            Controller.instance.RestartScene();
+        }
+    }
 
+    // Move to end position then destroy self
+    IEnumerator MoveToEnd()
+    {
         // Update positions and move to center of screen
         GetPositions();
-        transform.position = Camera.main.transform.position;
+        transform.position = cameraPos;
 
         // Move to end position
         while (transform.position.x > endPos.x)
@@ -82,5 +87,10 @@ public class Wipe : MonoBehaviour
         }
 
         Destroy(gameObject);
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }

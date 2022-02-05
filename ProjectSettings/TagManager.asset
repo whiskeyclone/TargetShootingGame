@@ -8,6 +8,7 @@ TagManager:
   - Wall
   - Target
   - Bullet
+  - Wipe
   layers:
   - Default
   - TransparentFX

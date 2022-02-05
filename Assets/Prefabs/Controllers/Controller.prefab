@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ignoreCollisionLayer: 6
-  wipe: {fileID: 7245415576542781024, guid: 947d997a024ecd642a2dbabaa22967b0, type: 3}
+  wipe: {fileID: 5071384614775907670, guid: 947d997a024ecd642a2dbabaa22967b0, type: 3}

@@ -1,61 +1,50 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Wipe : MonoBehaviour
 {
     Vector2 startPos;
     Vector2 endPos;
-    Vector2 cameraPos;
-    float speed = 30f;
+    float speed = 40f;
+    List<string> failMessages = new List<string>();
 
     // Start is called before the first frame update
     void Start()
     {
-        DontDestroyOnLoad(gameObject);
+        InitializeFailMessages();
 
         GetPositions();
         transform.position = startPos;
-        ScaleToScreen();
 
-        SceneManager.sceneLoaded += OnSceneLoaded;
-
-        StartCoroutine(MoveToCenter());
+        StartCoroutine(Move());
     }
 
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    void InitializeFailMessages()
     {
-        StartCoroutine(MoveToEnd());
-    }
-
-    // Scale object so it covers the entire screen
-    void ScaleToScreen()
-    {
-        float screenAspect = (float)Screen.width / (float)Screen.height;
-        float cameraHeight = Camera.main.orthographicSize * 2;
-        float cameraWidth = cameraHeight * screenAspect;
-
-        transform.localScale = new Vector2(cameraWidth, cameraHeight);
+        failMessages.Add("lmao");
+        failMessages.Add("cringe");
+        failMessages.Add("you suck lol");
+        failMessages.Add("malding");
+        failMessages.Add("just do something else bro");
+        failMessages.Add("you missed");
+        failMessages.Add("do you even have your eyes open?");
     }
 
     // Get start and end positions
     void GetPositions()
     {
-        cameraPos = Camera.main.transform.position;
+        float cameraWidth = MainCamera.instance.GetCameraBounds().size.x;
 
-        float screenAspect = (float)Screen.width / (float)Screen.height;
-        float cameraHeight = Camera.main.orthographicSize * 2;
-        float cameraWidth = cameraHeight * screenAspect;
-
-        startPos = cameraPos + new Vector2(cameraWidth, 0);
-        endPos = cameraPos + new Vector2(-cameraWidth, 0);
+        startPos = new Vector2(cameraWidth, 0);
+        endPos = new Vector2(-cameraWidth, 0);
     }
 
-    // Move to center of screen then change/restart scene
-    IEnumerator MoveToCenter()
+    // Move to center of screen, change/restart scene, then move to end position
+    IEnumerator Move()
     {
         // Move to center of screen
-        while (transform.position.x > cameraPos.x)
+        while (transform.position.x > 0f)
         {
             transform.position = Vector2.MoveTowards(transform.position, endPos, speed * Time.deltaTime);
             yield return null;
@@ -70,14 +59,6 @@ public class Wipe : MonoBehaviour
         {
             Controller.instance.RestartScene();
         }
-    }
-
-    // Move to end position then destroy self
-    IEnumerator MoveToEnd()
-    {
-        // Update positions and move to center of screen
-        GetPositions();
-        transform.position = cameraPos;
 
         // Move to end position
         while (transform.position.x > endPos.x)
@@ -87,10 +68,5 @@ public class Wipe : MonoBehaviour
         }
 
         Destroy(gameObject);
-    }
-
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }

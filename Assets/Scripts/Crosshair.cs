@@ -13,7 +13,7 @@ public class Crosshair : MonoBehaviour
         }
         else
         {
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
 

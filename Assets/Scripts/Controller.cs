@@ -6,7 +6,6 @@ public class Controller : MonoBehaviour
     public static Controller instance;
 
     [SerializeField] int ignoreCollisionLayer;
-    [SerializeField] GameObject wipe;
     bool levelWon = false;
 
     // Start is called before the first frame update
@@ -19,7 +18,7 @@ public class Controller : MonoBehaviour
         }
         else
         {
-            Destroy(this); // Destroy instance if another instance exists
+            Destroy(gameObject); // Destroy instance if another instance exists
             return;
         }
 
@@ -54,12 +53,12 @@ public class Controller : MonoBehaviour
 
             if (targetCount == 0)
             {
-                GameObject wipeInst = Instantiate(wipe, transform.position, transform.rotation); // Spawn wipe
+                MainCamera.instance.SpawnWipe();
                 levelWon = true;
             }
             else if (bulletCount < targetCount)
             {
-                Instantiate(wipe, transform.position, transform.rotation); // Spawn wipe
+                MainCamera.instance.SpawnWipe();
             }
         }
     }

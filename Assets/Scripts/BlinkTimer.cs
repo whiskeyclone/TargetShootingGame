@@ -17,7 +17,7 @@ public class BlinkTimer : MonoBehaviour
         }
         else
         {
-            Destroy(this); // Destroy instance if another instance exists
+            Destroy(gameObject); // Destroy instance if another instance exists
             return;
         }
 

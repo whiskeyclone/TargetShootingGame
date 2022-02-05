@@ -5,22 +5,17 @@ public class Bullet : MonoBehaviour
     SpriteRenderer spriteRend;
     ParticleSystem particleSys;
     [SerializeField] GameObject explosion;
-    Bounds cameraBounds;
     int bounceCount = 0;
     const int maxBounces = 3;
     const float reddenAmount = 0.2f; // How much to redden the bullet sprite when bouncing
     int portalsTouchedWhileTeleporting = 0;
+    Bounds cameraBounds;
 
     private void Start()
     {
-        // Get components
         spriteRend = GetComponent<SpriteRenderer>();
         particleSys = GetComponent<ParticleSystem>();
-
-        // Get camera bounds
-        float screenAspect = (float)Screen.width / (float)Screen.height;
-        float cameraHeight = Camera.main.orthographicSize * 2;
-        cameraBounds = new Bounds(Camera.main.transform.position, new Vector3(cameraHeight * screenAspect, cameraHeight, 0));
+        cameraBounds = MainCamera.instance.GetCameraBounds();
     }
 
     private void Update()

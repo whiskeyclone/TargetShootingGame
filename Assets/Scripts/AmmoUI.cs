@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
 public class AmmoUI : MonoBehaviour
@@ -19,13 +20,25 @@ public class AmmoUI : MonoBehaviour
         }
         else
         {
-            Destroy(this); // Destroy instance if another instance exists
+            Destroy(gameObject); // Destroy instance if another instance exists
             return;
         }
 
-        // Create bullet images
-        int ammoCount = PlayerController.instance.GetAmmo();
+        SceneManager.sceneLoaded += OnSceneLoaded;
         bulletImages = new List<GameObject>();
+        InitializeUI();
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Reinitialize UI
+        bulletImages.Clear();
+        InitializeUI();
+    }
+
+    void InitializeUI()
+    {
+        int ammoCount = PlayerController.instance.GetAmmo();
 
         for (int i = 0; i < ammoCount; i++)
         {
@@ -47,9 +60,8 @@ public class AmmoUI : MonoBehaviour
         }      
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
-        
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }

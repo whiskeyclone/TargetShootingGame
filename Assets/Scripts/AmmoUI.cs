@@ -11,7 +11,7 @@ public class AmmoUI : MonoBehaviour
     float spacing = 1f; // Distance between bullet images
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         // Set instance
         if (instance == null)
@@ -26,13 +26,19 @@ public class AmmoUI : MonoBehaviour
 
         SceneManager.sceneLoaded += OnSceneLoaded;
         bulletImages = new List<GameObject>();
-        InitializeUI();
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Reinitialize UI
+        // Destroy UI
+        for (int i = 0; i < bulletImages.Count; i++)
+        {
+            Destroy(bulletImages[i]);
+        }
+
         bulletImages.Clear();
+
+        // Create new UI with full ammo
         InitializeUI();
     }
 

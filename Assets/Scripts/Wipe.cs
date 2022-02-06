@@ -1,9 +1,11 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 
 public class Wipe : MonoBehaviour
 {
+    [SerializeField] TextMeshProUGUI text;
     Vector2 startPos;
     Vector2 endPos;
     float speed = 40f;
@@ -14,6 +16,11 @@ public class Wipe : MonoBehaviour
     {
         InitializeFailMessages();
 
+        if (Controller.instance.GetLevelWon() == false)
+        {
+            SelectRandomFailMessage();
+        }
+        
         GetPositions();
         transform.position = startPos;
 
@@ -29,6 +36,12 @@ public class Wipe : MonoBehaviour
         failMessages.Add("just do something else bro");
         failMessages.Add("you missed");
         failMessages.Add("do you even have your eyes open?");
+    }
+
+    void SelectRandomFailMessage()
+    {
+        int randIndex = Random.Range(0, failMessages.Count);
+        text.text = failMessages[randIndex];
     }
 
     // Get start and end positions

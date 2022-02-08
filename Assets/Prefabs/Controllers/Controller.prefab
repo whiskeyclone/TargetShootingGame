@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4075666459941983108}
   - component: {fileID: 4075666459941983109}
+  - component: {fileID: 4622413083562598792}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -44,4 +45,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ignoreCollisionLayer: 6
-  wipe: {fileID: 5071384614775907670, guid: 947d997a024ecd642a2dbabaa22967b0, type: 3}
+--- !u!114 &4622413083562598792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4075666459941983110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77bb147a42a805941961afa99e085df1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Main Song
+    clip: {fileID: 8300000, guid: f174a6e5889e0174c9bca9cabb6e6e62, type: 3}
+    audioSource: {fileID: 0}
+    loop: 0
+    volume: 0.201

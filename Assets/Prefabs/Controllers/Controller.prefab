@@ -62,4 +62,19 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: f174a6e5889e0174c9bca9cabb6e6e62, type: 3}
     audioSource: {fileID: 0}
     loop: 0
-    volume: 0.201
+    volume: 0.238
+  - name: Bump
+    clip: {fileID: 8300000, guid: 17aecdd75d03e8e4ca1474663956af01, type: 3}
+    audioSource: {fileID: 0}
+    loop: 0
+    volume: 0.502
+  - name: Burst
+    clip: {fileID: 8300000, guid: 4318051e205124847b0ed46f86b1a5df, type: 3}
+    audioSource: {fileID: 0}
+    loop: 0
+    volume: 0.131
+  - name: Laser
+    clip: {fileID: 8300000, guid: 9f42c78fc73c3894e86f6f3042b44989, type: 3}
+    audioSource: {fileID: 0}
+    loop: 0
+    volume: 0.372

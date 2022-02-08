@@ -30,6 +30,7 @@ public class Bullet : MonoBehaviour
     public void DestroySelf()
     {
         CreateExplosion();
+        AudioController.instance.PlaySound("Burst");
         Destroy(gameObject);
     }
 
@@ -92,6 +93,7 @@ public class Bullet : MonoBehaviour
             else
             {
                 ChangeColor();
+                AudioController.instance.PlaySound("Bump");
             }
         }
     }

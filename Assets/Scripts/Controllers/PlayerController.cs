@@ -43,6 +43,8 @@ public class PlayerController : MonoBehaviour
         // Decrease ammo
         ammo--;
         AmmoUI.instance.DecreaseUI();
+
+        AudioController.instance.PlaySound("Laser");
     }
 
     public int GetMaxAmmo()

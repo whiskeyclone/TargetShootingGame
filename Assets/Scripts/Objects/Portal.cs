@@ -36,6 +36,7 @@ public class Portal : MonoBehaviour
 
                 collision.transform.position = otherPortal.transform.position; // Teleport
                 CreateExplosion();
+                AudioController.instance.PlaySound("Portal");
             }
             else if (bullet.GetPortalsTouchedWhileTeleporting() == 1) // Enter second portal
             {

@@ -8,8 +8,9 @@ public class Wipe : MonoBehaviour
     [SerializeField] TextMeshProUGUI text;
     Vector2 startPos;
     Vector2 endPos;
-    float speed = 40f;
+    float speed = 25f;
     List<string> failMessages = new List<string>();
+    string wipeSound;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +24,18 @@ public class Wipe : MonoBehaviour
         
         GetPositions();
         transform.position = startPos;
+        
+        // Get wipe sound
+        if (Controller.instance.GetLevelWon() == true)
+        {
+            wipeSound = "Cheer";
+        }
+        else
+        {
+            wipeSound = "Boo";
+        }
+
+        AudioController.instance.FadeInSound(wipeSound);
 
         StartCoroutine(Move());
     }
@@ -80,6 +93,7 @@ public class Wipe : MonoBehaviour
             yield return null;
         }
 
+        AudioController.instance.FadeOutSound(wipeSound);
         Destroy(gameObject);
     }
 }

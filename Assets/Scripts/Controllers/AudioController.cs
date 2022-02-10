@@ -1,9 +1,11 @@
 using UnityEngine;
+using System.Collections;
 
 public class AudioController : MonoBehaviour
 {
     public static AudioController instance;
     [SerializeField] Sound[] sounds;
+    [SerializeField] float fadeTime;
 
     float gameVolume = 1f;
 
@@ -46,6 +48,64 @@ public class AudioController : MonoBehaviour
         }
 
         Debug.LogError("Sound: " + name + " not found!");
+    }
+
+    public void FadeInSound(string name)
+    {
+        foreach (Sound s in sounds)
+        {
+            if (s.name == name)
+            {
+                StartCoroutine(FadeIn(s.audioSource));
+                return;
+            }
+        }
+
+        Debug.LogError("Sound: " + name + " not found!");
+    }
+
+    public void FadeOutSound(string name)
+    {
+        foreach (Sound s in sounds)
+        {
+            if (s.name == name)
+            {
+                StartCoroutine(FadeOut(s.audioSource));
+                return;
+            }
+        }
+
+        Debug.LogError("Sound: " + name + " not found!");
+    }
+
+    IEnumerator FadeIn(AudioSource audioSource)
+    {
+        float targetVol = audioSource.volume;
+        float currentTime = 0f;
+        audioSource.Play();
+
+        while (currentTime < fadeTime)
+        {
+            audioSource.volume = Mathf.Lerp(0, targetVol, currentTime / fadeTime);
+            currentTime += Time.deltaTime;
+            yield return null;
+        }
+    }
+
+    IEnumerator FadeOut(AudioSource audioSource)
+    {
+        float startVol = audioSource.volume;
+        float currentTime = 0f;
+
+        while (currentTime < fadeTime)
+        {
+            audioSource.volume = Mathf.Lerp(startVol, 0, currentTime / fadeTime);
+            currentTime += Time.deltaTime;
+            yield return null;
+        }
+
+        audioSource.Stop();
+        audioSource.volume = startVol;
     }
 
     public void StopSound(string name)

@@ -5,7 +5,6 @@ public class AudioController : MonoBehaviour
 {
     public static AudioController instance;
     [SerializeField] Sound[] sounds;
-    [SerializeField] float fadeTime;
 
     float gameVolume = 1f;
 
@@ -50,13 +49,13 @@ public class AudioController : MonoBehaviour
         Debug.LogError("Sound: " + name + " not found!");
     }
 
-    public void FadeInSound(string name)
+    public void FadeInSound(string name, float fadeTime)
     {
         foreach (Sound s in sounds)
         {
             if (s.name == name)
             {
-                StartCoroutine(FadeIn(s.audioSource));
+                StartCoroutine(FadeIn(s.audioSource, fadeTime));
                 return;
             }
         }
@@ -64,13 +63,13 @@ public class AudioController : MonoBehaviour
         Debug.LogError("Sound: " + name + " not found!");
     }
 
-    public void FadeOutSound(string name)
+    public void FadeOutSound(string name, float fadeTime)
     {
         foreach (Sound s in sounds)
         {
             if (s.name == name)
             {
-                StartCoroutine(FadeOut(s.audioSource));
+                StartCoroutine(FadeOut(s.audioSource, fadeTime));
                 return;
             }
         }
@@ -78,7 +77,7 @@ public class AudioController : MonoBehaviour
         Debug.LogError("Sound: " + name + " not found!");
     }
 
-    IEnumerator FadeIn(AudioSource audioSource)
+    IEnumerator FadeIn(AudioSource audioSource, float fadeTime)
     {
         float targetVol = audioSource.volume;
         float currentTime = 0f;
@@ -92,7 +91,7 @@ public class AudioController : MonoBehaviour
         }
     }
 
-    IEnumerator FadeOut(AudioSource audioSource)
+    IEnumerator FadeOut(AudioSource audioSource, float fadeTime)
     {
         float startVol = audioSource.volume;
         float currentTime = 0f;

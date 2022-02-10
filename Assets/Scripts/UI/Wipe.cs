@@ -10,14 +10,21 @@ public class Wipe : MonoBehaviour
     Vector2 endPos;
     float speed = 25f;
     List<string> failMessages = new List<string>();
+    List<string> winMessages = new List<string>();
     string wipeSound;
+    float wipeSoundFadeTime = 1f;
 
     // Start is called before the first frame update
     void Start()
     {
-        InitializeFailMessages();
+        InitializeMessages();
 
-        if (Controller.instance.GetLevelWon() == false)
+        // Set wipe text
+        if (Controller.instance.GetLevelWon() == true)
+        {
+            SelectRandomWinMessage();
+        }
+        else
         {
             SelectRandomFailMessage();
         }
@@ -35,12 +42,12 @@ public class Wipe : MonoBehaviour
             wipeSound = "Boo";
         }
 
-        AudioController.instance.FadeInSound(wipeSound);
+        AudioController.instance.FadeInSound(wipeSound, wipeSoundFadeTime);
 
         StartCoroutine(Move());
     }
 
-    void InitializeFailMessages()
+    void InitializeMessages()
     {
         failMessages.Add("lmao");
         failMessages.Add("cringe");
@@ -49,12 +56,28 @@ public class Wipe : MonoBehaviour
         failMessages.Add("just do something else bro");
         failMessages.Add("you missed");
         failMessages.Add("do you even have your eyes open?");
+        failMessages.Add("it's not too late to give up");
+
+        winMessages.Add("nice shot");
+        winMessages.Add("good job");
+        winMessages.Add("impressive!");
+        winMessages.Add("very good");
+        winMessages.Add("nice");
+        winMessages.Add("keep it up!");
     }
 
     void SelectRandomFailMessage()
     {
         int randIndex = Random.Range(0, failMessages.Count);
         text.text = failMessages[randIndex];
+        text.color = Color.red;
+    }
+
+    void SelectRandomWinMessage()
+    {
+        int randIndex = Random.Range(0, winMessages.Count);
+        text.text = winMessages[randIndex];
+        text.color = Color.green;
     }
 
     // Get start and end positions
@@ -93,7 +116,7 @@ public class Wipe : MonoBehaviour
             yield return null;
         }
 
-        AudioController.instance.FadeOutSound(wipeSound);
+        AudioController.instance.FadeOutSound(wipeSound, wipeSoundFadeTime);
         Destroy(gameObject);
     }
 }

@@ -61,7 +61,7 @@ MonoBehaviour:
   - name: Main Song
     clip: {fileID: 8300000, guid: f174a6e5889e0174c9bca9cabb6e6e62, type: 3}
     audioSource: {fileID: 0}
-    loop: 0
+    loop: 1
     volume: 0.315
   - name: Bump
     clip: {fileID: 8300000, guid: 17aecdd75d03e8e4ca1474663956af01, type: 3}

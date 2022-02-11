@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6329570187287758354
+--- !u!1 &3124061207710365258
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,23 +8,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6730448793033743560}
-  - component: {fileID: 9002066829901490349}
+  - component: {fileID: 3032369708311143563}
+  - component: {fileID: 7150938802774386733}
   m_Layer: 0
-  m_Name: Ammo
-  m_TagString: Untagged
+  m_Name: Ammo UI
+  m_TagString: Ammo UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &6730448793033743560
+--- !u!224 &3032369708311143563
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6329570187287758354}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_GameObject: {fileID: 3124061207710365258}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -33,16 +33,16 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -379.55038, y: -210.86133}
+  m_AnchoredPosition: {x: -365.49295, y: -196.80391}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &9002066829901490349
+--- !u!114 &7150938802774386733
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6329570187287758354}
+  m_GameObject: {fileID: 3124061207710365258}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf6548add53e23e418ad95a03deaf0d1, type: 3}
@@ -80,7 +80,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 6808994350653812307}
-  - {fileID: 6730448793033743560}
+  - {fileID: 3032369708311143563}
   m_Father: {fileID: 6808994350856916839}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -265,7 +265,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6808994350856916891}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.5, y: 0.5, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6808994349540411717}
@@ -336,4 +336,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wipe: {fileID: 5071384614775907670, guid: 947d997a024ecd642a2dbabaa22967b0, type: 3}
+  menuWipe: {fileID: 1717267504971626607, guid: 937414b7d430e1641b3613a5371eb5af, type: 3}
   canvasTrans: {fileID: 6808994349540411717}
+  startMenu: {fileID: 6874536966669977000, guid: 8390fa05905d0d44b9bec4a0ea948612, type: 3}
+  ammoUI: {fileID: 6363605579312561743, guid: 13881ace7f7039348bfd335a97caec50, type: 3}

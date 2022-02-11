@@ -9,6 +9,8 @@ TagManager:
   - Target
   - Bullet
   - Wipe
+  - Menu
+  - Ammo UI
   layers:
   - Default
   - TransparentFX

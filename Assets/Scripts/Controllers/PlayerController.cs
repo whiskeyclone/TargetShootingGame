@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     const int maxAmmo = 5;
     int ammo;
     float bulletSpawnOffset = 0.75f; // How far away from player to spawn bullet
+
     private void Awake()
     {
         // Set instance
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
 
         physics = GetComponent<Physics>();
         ammo = maxAmmo;
+        AmmoUI.instance.ResetUI();
     }
 
     void FireBullet()
@@ -69,11 +71,13 @@ public class PlayerController : MonoBehaviour
 
     void GetInputs()
     {
+        /*
         // Restart scene
         if (Input.GetKeyDown(KeyCode.R))
         {
             Controller.instance.RestartScene();
         }
+        */
 
         // Fire bullet
         if (Input.GetKeyDown(KeyCode.Mouse0) && (ammo > 0))

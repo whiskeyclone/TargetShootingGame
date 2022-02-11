@@ -28,13 +28,6 @@ public class Controller : MonoBehaviour
         AudioController.instance.PlaySound("Main Song");
     }
 
-    // Reset scene persistent variables and objects
-    void ResetPersistent()
-    {
-        levelWon = false;
-        AmmoUI.instance.ResetUI();
-    }
-
     public void GoToNextScene()
     {
         // Get next scene
@@ -43,15 +36,20 @@ public class Controller : MonoBehaviour
         if (nextSceneIndex < SceneManager.sceneCountInBuildSettings) // Check if next scene is valid
         {
             // Go to next scene
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-            ResetPersistent();
+            levelWon = false;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);          
         }
     }
 
     public void RestartScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        ResetPersistent();
+        levelWon = false;
+    }
+
+    public int GetCurrentSceneIndex()
+    {
+        return (SceneManager.GetActiveScene().buildIndex);
     }
 
     // If there are no targets left, move to next scene. Otherwise, if it is impossible for the player to win, restart scene

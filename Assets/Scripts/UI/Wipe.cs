@@ -109,6 +109,8 @@ public class Wipe : MonoBehaviour
             Controller.instance.RestartScene();
         }
 
+        AmmoUI.instance.ResetUI();
+
         // Move to end position
         while (transform.position.x > endPos.x)
         {

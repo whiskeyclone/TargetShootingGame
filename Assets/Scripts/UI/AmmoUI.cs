@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
 public class AmmoUI : MonoBehaviour
@@ -44,12 +43,15 @@ public class AmmoUI : MonoBehaviour
 
     void InitializeUI()
     {
-        int ammoCount = PlayerController.instance.GetMaxAmmo();
-
-        for (int i = 0; i < ammoCount; i++)
+        if (PlayerController.instance != null)
         {
-            Vector2 position = new Vector2(transform.position.x + i * spacing, transform.position.y);
-            bulletImages.Add(Instantiate(bulletImage, position, transform.rotation, transform));
+            int ammoCount = PlayerController.instance.GetMaxAmmo();
+
+            for (int i = 0; i < ammoCount; i++)
+            {
+                Vector2 position = new Vector2(transform.position.x + i * spacing, transform.position.y);
+                bulletImages.Add(Instantiate(bulletImage, position, transform.rotation, transform));
+            }
         }
     }
 

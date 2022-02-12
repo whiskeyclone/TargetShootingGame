@@ -43,15 +43,12 @@ public class AmmoUI : MonoBehaviour
 
     void InitializeUI()
     {
-        if (PlayerController.instance != null)
-        {
-            int ammoCount = PlayerController.instance.GetMaxAmmo();
+        int ammoCount = PlayerController.instance.GetMaxAmmo();
 
-            for (int i = 0; i < ammoCount; i++)
-            {
-                Vector2 position = new Vector2(transform.position.x + i * spacing, transform.position.y);
-                bulletImages.Add(Instantiate(bulletImage, position, transform.rotation, transform));
-            }
+        for (int i = 0; i < ammoCount; i++)
+        {
+            Vector2 position = new Vector2(transform.position.x + i * spacing, transform.position.y);
+            bulletImages.Add(Instantiate(bulletImage, position, transform.rotation, transform));
         }
     }
 

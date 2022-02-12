@@ -10,6 +10,8 @@ public class MenuWipe : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        DontDestroyOnLoad(gameObject);
+
         GetPositions();
         transform.position = startPos;
 
@@ -37,7 +39,6 @@ public class MenuWipe : MonoBehaviour
             yield return null;
         }
 
-        MainCamera.instance.DestroyMenu();
         Controller.instance.GoToNextScene();
 
         // Move to end position

@@ -6,8 +6,6 @@ public class MainCamera : MonoBehaviour
     [SerializeField] GameObject wipe;
     [SerializeField] GameObject menuWipe;
     [SerializeField] Transform canvasTrans;
-    [SerializeField] GameObject startMenu;
-    [SerializeField] GameObject ammoUI;
     Bounds cameraBounds;
 
     // Start is called before the first frame update
@@ -24,11 +22,6 @@ public class MainCamera : MonoBehaviour
         {
             Destroy(gameObject); // Destroy instance if another instance exists
             return;
-        }
-
-        if (Controller.instance.GetCurrentSceneIndex() == 0)
-        {
-            Instantiate(startMenu, canvasTrans);
         }
 
         InitializeCameraBounds();
@@ -51,25 +44,6 @@ public class MainCamera : MonoBehaviour
         if (GameObject.FindGameObjectsWithTag("Wipe").Length == 0) // If no wipes exist
         {
             Instantiate(wipe, canvasTrans);
-        }
-    }
-
-    public void SpawnMenuWipe()
-    {
-        if (GameObject.FindGameObjectsWithTag("Wipe").Length == 0) // If no wipes exist
-        {
-            Instantiate(menuWipe, canvasTrans);
-        }
-    }
-
-    // Destroy current menu
-    public void DestroyMenu()
-    {
-        GameObject menu = GameObject.FindGameObjectWithTag("Menu");
-
-        if (menu != null)
-        {
-            Destroy(menu);
         }
     }
 }

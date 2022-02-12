@@ -30,7 +30,6 @@ public class PlayerController : MonoBehaviour
 
         physics = GetComponent<Physics>();
         ammo = maxAmmo;
-        AmmoUI.instance.ResetUI();
     }
 
     void FireBullet()

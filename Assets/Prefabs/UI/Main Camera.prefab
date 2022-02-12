@@ -338,5 +338,3 @@ MonoBehaviour:
   wipe: {fileID: 5071384614775907670, guid: 947d997a024ecd642a2dbabaa22967b0, type: 3}
   menuWipe: {fileID: 1717267504971626607, guid: 937414b7d430e1641b3613a5371eb5af, type: 3}
   canvasTrans: {fileID: 6808994349540411717}
-  startMenu: {fileID: 6874536966669977000, guid: 8390fa05905d0d44b9bec4a0ea948612, type: 3}
-  ammoUI: {fileID: 6363605579312561743, guid: 13881ace7f7039348bfd335a97caec50, type: 3}

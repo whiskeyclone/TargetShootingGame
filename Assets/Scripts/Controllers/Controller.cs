@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class Controller : MonoBehaviour
 {
@@ -7,6 +8,8 @@ public class Controller : MonoBehaviour
 
     [SerializeField] int ignoreCollisionLayer;
     bool levelWon = false;
+    float time = 0f;
+    int resetCount = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +48,7 @@ public class Controller : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         levelWon = false;
+        resetCount++;
     }
 
     public int GetCurrentSceneIndex()
@@ -75,5 +79,48 @@ public class Controller : MonoBehaviour
     public bool GetLevelWon()
     {
         return (levelWon);
+    }
+
+    public void StartTimer()
+    {
+        time = 0f;
+        StartCoroutine(Timer());
+    }
+
+    public void StopTimer()
+    {
+        StopCoroutine(Timer());
+    }
+
+    public float GetTime()
+    {
+        return (time);
+    }
+
+    IEnumerator Timer()
+    {
+        while (true)
+        {
+            time += Time.deltaTime;
+            yield return null;
+        }
+    }
+
+    public int GetResetCount()
+    {
+        return (resetCount);
+    }
+
+    public void ResetResetCount()
+    {
+        resetCount = 0;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            GoToNextScene();
+        }
     }
 }

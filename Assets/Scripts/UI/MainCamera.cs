@@ -4,7 +4,6 @@ public class MainCamera : MonoBehaviour
 {
     public static MainCamera instance;
     [SerializeField] GameObject wipe;
-    [SerializeField] GameObject menuWipe;
     [SerializeField] Transform canvasTrans;
     Bounds cameraBounds;
 

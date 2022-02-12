@@ -8,6 +8,11 @@ public class StartMenu : MonoBehaviour
         if (GameObject.FindGameObjectsWithTag("Wipe").Length == 0) // If no wipes exist
         {
             Instantiate(menuWipe);
+
+            Controller.instance.StartTimer();
+            Controller.instance.ResetResetCount();
+
+            AudioController.instance.PlaySound("Laser");
         }
     }
 }

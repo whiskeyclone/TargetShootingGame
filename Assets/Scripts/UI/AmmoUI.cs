@@ -27,20 +27,6 @@ public class AmmoUI : MonoBehaviour
         InitializeUI();
     }
 
-    public void ResetUI()
-    {
-        // Destroy UI
-        for (int i = 0; i < bulletImages.Count; i++)
-        {
-            Destroy(bulletImages[i]);
-        }
-
-        bulletImages.Clear();
-
-        // Create new UI with full ammo
-        InitializeUI();
-    }
-
     void InitializeUI()
     {
         int ammoCount = PlayerController.instance.GetMaxAmmo();

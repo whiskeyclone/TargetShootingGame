@@ -3,15 +3,11 @@ using UnityEngine;
 public class MainCamera : MonoBehaviour
 {
     public static MainCamera instance;
-    [SerializeField] GameObject wipe;
-    [SerializeField] Transform canvasTrans;
     Bounds cameraBounds;
 
     // Start is called before the first frame update
     void Start()
     {
-        DontDestroyOnLoad(gameObject);
-
         // Set instance
         if (instance == null)
         {
@@ -36,13 +32,5 @@ public class MainCamera : MonoBehaviour
     public Bounds GetCameraBounds()
     {
         return (cameraBounds);
-    }
-
-    public void SpawnWipe()
-    {
-        if (GameObject.FindGameObjectsWithTag("Wipe").Length == 0) // If no wipes exist
-        {
-            Instantiate(wipe, canvasTrans);
-        }
     }
 }

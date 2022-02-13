@@ -4,6 +4,7 @@ public class Explosion : MonoBehaviour
 {
     private void OnParticleSystemStopped()
     {
-        Controller.instance.CheckWin();
+        WinChecker.instance.CheckWin();
+        Destroy(gameObject);
     }
 }

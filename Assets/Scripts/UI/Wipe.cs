@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -6,44 +7,50 @@ using TMPro;
 public class Wipe : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI text;
+    [SerializeField] Transform wipeImageTrans;
+
+    List<string> failMessages = new List<string>();
+    List<string> winMessages = new List<string>();
+
+    Canvas canvas;
     Vector2 startPos;
     Vector2 endPos;
     float speed = 25f;
-    List<string> failMessages = new List<string>();
-    List<string> winMessages = new List<string>();
     string wipeSound;
     float wipeSoundFadeTime = 1f;
+
+    private void Awake()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
+        DontDestroyOnLoad(gameObject);
         InitializeMessages();
 
-        // Set wipe text
-        if (Controller.instance.GetLevelWon() == true)
-        {
-            SelectRandomWinMessage();
-        }
-        else
-        {
-            SelectRandomFailMessage();
-        }
+        canvas = GetComponent<Canvas>();
+        canvas.worldCamera = Camera.main; // Set canvas camera
         
         GetPositions();
-        transform.position = startPos;
-        
-        // Get wipe sound
-        if (Controller.instance.GetLevelWon() == true)
+        wipeImageTrans.position = startPos;
+
+        // Set text and wipe sound
+        if (WinChecker.instance.GetLevelWon() == true)
         {
+            text.text = GetWinMessage();
+            text.color = Color.green;
             wipeSound = "Cheer";
         }
         else
         {
+            text.text = GetFailMessage();
+            text.color = Color.red;
             wipeSound = "Boo";
         }
 
         AudioController.instance.FadeInSound(wipeSound, wipeSoundFadeTime);
-
         StartCoroutine(Move());
     }
 
@@ -66,18 +73,21 @@ public class Wipe : MonoBehaviour
         winMessages.Add("keep it up!");
     }
 
-    void SelectRandomFailMessage()
+    string GetFailMessage()
     {
         int randIndex = Random.Range(0, failMessages.Count);
-        text.text = failMessages[randIndex];
-        text.color = Color.red;
+        return (failMessages[randIndex]);
     }
 
-    void SelectRandomWinMessage()
+    string GetWinMessage()
     {
         int randIndex = Random.Range(0, winMessages.Count);
-        text.text = winMessages[randIndex];
-        text.color = Color.green;
+        return (winMessages[randIndex]);
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        canvas.worldCamera = Camera.main; // Set canvas camera
     }
 
     // Get start and end positions
@@ -89,36 +99,39 @@ public class Wipe : MonoBehaviour
         endPos = new Vector2(-cameraWidth, 0);
     }
 
-    // Move to center of screen, change/restart scene, then move to end position
+    // Move wipe image to center of screen, change/restart scene, then move wipe image to end position
     IEnumerator Move()
     {
         // Move to center of screen
-        while (transform.position.x > 0f)
+        while (wipeImageTrans.position.x > 0f)
         {
-            transform.position = Vector2.MoveTowards(transform.position, endPos, speed * Time.deltaTime);
+            wipeImageTrans.position = Vector2.MoveTowards(wipeImageTrans.position, endPos, speed * Time.deltaTime);
             yield return null;
         }
 
-        // Change or restart scene
-        if (Controller.instance.GetLevelWon() == true)
+        // Move to scene
+        if (WinChecker.instance.GetLevelWon() == true)
         {
-            Controller.instance.GoToNextScene();
+            SceneController.instance.GoToNextScene();
         }
         else
         {
-            Controller.instance.RestartScene();
+            SceneController.instance.RestartScene();
         }
 
-        AmmoUI.instance.ResetUI();
-
         // Move to end position
-        while (transform.position.x > endPos.x)
+        while (wipeImageTrans.position.x > endPos.x)
         {
-            transform.position = Vector2.MoveTowards(transform.position, endPos, speed * Time.deltaTime);
+            wipeImageTrans.position = Vector2.MoveTowards(wipeImageTrans.position, endPos, speed * Time.deltaTime);
             yield return null;
         }
 
-        AudioController.instance.FadeOutSound(wipeSound, wipeSoundFadeTime);
+        AudioController.instance.FadeOutSound(wipeSound, wipeSoundFadeTime);       
         Destroy(gameObject);
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }

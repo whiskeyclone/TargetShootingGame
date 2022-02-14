@@ -60,6 +60,7 @@ public class Wipe : MonoBehaviour
         failMessages.Add("cringe");
         failMessages.Add("you suck lol");
         failMessages.Add("malding");
+        failMessages.Add("cope");
         failMessages.Add("just do something else bro");
         failMessages.Add("you missed");
         failMessages.Add("do you even have your eyes open?");
@@ -71,6 +72,7 @@ public class Wipe : MonoBehaviour
         winMessages.Add("very good");
         winMessages.Add("nice");
         winMessages.Add("keep it up!");
+        winMessages.Add("what a gamer!");
     }
 
     string GetFailMessage()
